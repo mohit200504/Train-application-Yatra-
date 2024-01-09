@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yatra</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/efead92a1b.js" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .navbar {
+            background: #3498db;
+        }
+
+        .navbar a {
+            color: white !important;
+        }
+
+        .container {
+            background-color: #fff;
+            height: 500px;
+            width: 70%;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+            flex-wrap: wrap;
+            margin: 20px auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .container .one, .container .two {
+            height: 150px;
+            background-color: #fff;
+            width: 150px;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+			flex-direction:column;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            border: 2px solid #fff;
+            border-radius: 6px;
+            margin: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .container .one:hover, .container .two:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar  navbar-expand-md" style="background:skyblue">
+
+<h3 style="color:white;margin-top:3px"><a class="nav-brand">Yatra</a></h3>
+
+<button type="button" class="navbar-toggler " data-toggle="collapse" data-target="#menu" style="border:none;outline:none">
+<span class="navbar-toggler-icon" >
+<i class="fa-solid fa-bars" style="color:white;margin-top:1px;font-size:30px"></i>
+</span>
+</button>
+<div class=" collapse navbar-collapse " id="menu">
+<ul class="navbar-nav ml-auto" style="color:white">
+<li class="navbar-items-active " >
+<a class="nav-link" href="pnrbody.html" style="color:white;font-family:arial">PNR check</a>
+</li>
+<li class="navbar-items">
+<a class="nav-link" href="#"style="color:white;font-family:arial">Train Search</a>
+</li>
+<li class="navbar-items">
+<a class="nav-link" href="railwaybody.html"style="color:white;font-family:arial">Seat Availbility Check</a>
+</li>
+<li class="navbar-items">
+<a class="nav-link" href="#"style="color:white;font-family:arial">Live train status</a>
+</li>
+</ul>
+</div>
+</div>
+
+
+
+<div class="container" >
+
+<div class="one">
+
+<a href="text.html" style="text-decoration:none"><i class="fa-solid fa-ticket" style="font-size:70px"></i></a>
+<h4>PNR check</h4>
+</div>
+
+
+
+<div class="one">
+
+<img src="https://img.freepik.com/premium-vector/train-icon_609277-3634.jpg?w=2000" style="height:100px;width:100px"/>
+<h4>Train Search</h4>
+</div>
+
+
+<div class="one">
+
+<img src="data:image/png;base64,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" style="height:100px;width:100px"/>
+<h4>Seat check</h4>
+</div>
+
+
+<div class="two">
+
+<a href="flex.html"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR89ojt9lzSBVrVsWhRyUaT_fVzXue2hEpWvA&usqp=CAU" style="height:100px;width:100px"/></a>
+<h4>Live Train</h4>
+</div>
+
+</div>
+
+<footer class="bg-dark text-white text-center py-3" style="margin-top:100px">
+    <p>&copy; 2024 Yatra. All rights reserved.</p>
+	<p>Author: mohith pogiri</p>
+    <div>
+        <a href="https://www.linkedin.com/in/mohith-pogiri-330859269/" target="_blank" class="text-white mx-2">
+            <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+        <a href="https://github.com/mohit200504" target="_blank" class="text-white mx-2">
+            <i class="fab fa-github"></i> GitHub
+        </a>
+    </div>
+</footer>
+
+</body>
+</html>

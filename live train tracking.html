@@ -1,0 +1,346 @@
+<html>
+<head>
+<meta charset="UTF-8">
+    <title id="livetrain">Live train</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+       
+         .con .flex-item {
+            padding: 20px 30px;
+            width: 50%;
+            background: silver;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .con {
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            background: white;
+        }
+		
+
+       
+		
+		
+		
+		@media only screen and (min-width: 700px) {
+            .flex-item {
+                width: 100%;
+            }
+			.main .example input{
+			width:80px;
+			}
+			.nextStation{
+			width: 100%;
+			}
+        }
+       
+        .main {
+            height: 70px;
+            width: 100%;
+            background: skyblue;
+            align-items: center;
+            justify-content: space-between;
+            display: flex;
+			
+        }
+
+        .main .search input {
+            border-radius: 64px;
+        }
+
+        form.example input[type=text] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid grey;
+            float: left;
+            width: 80%;
+            background: #f1f1f1;
+        }
+
+        form.example button {
+            float: left;
+            width: 20%;
+            padding: 10px;
+            height: 46px;
+            background: #2196F3;
+            color: white;
+            font-size: 17px;
+            border: 1px solid grey;
+            border-left: none;
+            cursor: pointer;
+        }
+
+        form.example button:hover {
+            background: #0b7dda;
+        }
+		
+		
+		
+		@media only screen and (min-width: 300px) {
+    .flex-item {
+        width: 100%;
+    }
+    
+    .main .example input {
+        width: 80px;
+    }
+    
+    .nextStation {
+        width: 100%;
+    }
+}
+
+
+
+
+    </style>
+</head>
+<body>
+
+    <div class="main">
+					
+					
+					
+        <div class="brand">
+            <h2 style="font-family: arial; margin-left:10px;font-family:arial;color:white">Live train</h2>
+        </div>
+		
+		
+		
+				
+
+		
+		
+        <form class="example" style="margin-right:20px;margin-top:10px;">
+            <input type="text" id="trainno" placeholder="Enter Train no" style="border:white;background:white;margin-right:0px;border-left-radius:6px;height:46px;margin-top:px;">
+            <!--city input--->
+            <button style="background:white;color:black;border:white;margin-right:0px;" onclick="gettrain(); return false;"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+
+    <div class="con" id="result">
+	
+	
+	
+	
+	
+	
+	
+	
+	</div>
+
+    
+
+
+
+
+
+<script>
+        async function gettrain() {
+            let no = document.getElementById("trainno");
+            var inno = no.value;
+            console.log(inno);
+
+            const url = `https://irctc1.p.rapidapi.com/api/v1/liveTrainStatus?trainNo=${inno}&startDay=1`;
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': '5c514bae77msh55e4cc4185b50e4p1104c7jsn7987f9655639',
+                    'X-RapidAPI-Host': 'irctc1.p.rapidapi.com'
+                }
+            };
+
+            
+			
+			fetch(url,options)
+			.then( res=>{
+			if(!res.ok){
+			throw new Error("api call failed")
+			}
+			
+			return res.json();
+			})
+			.then(async data=>{
+			const onlydata=await data.data;
+			console.log(onlydata);
+			var res=document.getElementById("result");
+			
+			let title=document.getElementById("livetrain");
+			title.innerHTML=onlydata.train_name
+
+			
+			res.innerHTML+=`
+			<div class="nextStation" id="notification"style="flex-direction:row;position:fixed;top:7px;justify-content:space-between;align-items:center;display:flex;background:lightgreen;border-radius:6px;width: 50%;height:65px">
+	<div style="height:50px;width:50px;border-radius:50%;background:green;justify-content:center;align-items:center;">
+	<h1 style="font-family:arial;color:white;margin-left:18px;margin-top:0">${onlydata.upcoming_stations[0].platform_number}</h1>
+	</div>
+	<div>
+	<h2 style="font-family:arial;">Next stop  ${onlydata.upcoming_stations[0].station_name} ${onlydata.upcoming_stations[0].distance_from_current_station}km ${onlydata.upcoming_stations[0].eta}</h2>
+	</div>
+	<div>
+	<img src="https://cdn-icons-png.flaticon.com/512/1828/1828843.png" onclick="closeNotification()"style="cursor:pointer;height:50px;height:50px;margin-right:20px;""/>
+	</div>
+	     
+	
+	</div>
+	
+	`;
+			
+			
+			
+			
+			
+			
+			
+			
+			for(let i=0; i< onlydata.previous_stations.length;i++){
+			const station=onlydata.previous_stations[i];
+			res.innerHTML+=`
+		<div class="flex-item" style="background-color:#efefef">
+                <!--firsttime-->
+                <div class="firstTime" style="height:50px;width:20%;background:#efefef;justify-content:center;align-items:center;display:flex;flex-direction:column">
+                    <div class="ftime">
+                        <h4 style="font-family:Arial Narrow;" id="sta">${station.sta}</h4>
+                    </div>
+                    <div class="secondtime">
+                        <h4 style="font-family:Arial Narrow;margin-top:10px" id="eta">${station.eta}</h4>
+                    </div>
+                </div><!--firsttime-->
+                <!--line and station name-->
+                <div class="station_name" style="height:50px;width:60%;background:#efefef;justify-content:center;align-items:center;display:flex;" >
+                    <div class="line" style="height:100px;width:20px;background:skyblue;justify-content:center;align-items:center;display:flex;position:absolute;margin-left:-90px;">
+                        <div class="point" style="height:10px;width:10px;border-radius:50%;background:darkblue"></div>
+                    </div>
+                    <div class="staname" style="margin-left:3%;">
+                        <p style="font-family:Arial Narrow;font-size:13px;margin-left:35px;" id="station_name">${station.station_name}</p>
+                    </div>
+                    <div class="platformno" style="height:17px;width:15px;background:white;border-radius:2px;justify-content:center;align-items:center;margin-left:3px">
+                        <div style="margin-left:2px;font-family:Arial Narrow;margin-bottom:2px" id="platform_number">${station.platform_number}</div>
+						<div class="km" style="font-size:12;font-family:Arial;margin-left:-25px">${station.distance_from_source}Km</div>
+                    </div>
+                </div> <!--line and station name-->
+                <!--secondtime-->
+                <div class="secondTime" style="height:50px;width:20%;background:#efefef;justify-content:center;align-items:center;display:flex;flex-direction:column">
+                    <div class="ftime">
+                        <h4 style="font-family:Arial Narrow;" id="std">${station.std}</h4>
+                    </div>
+                    <div class="secondtime">
+                        <h4 style="font-family:Arial Narrow;margin-top:10px" id="eta">${station.etd}</h4>
+                    </div>
+                </div>
+            </div>`;
+			
+			
+			
+			}
+			
+			<!---current sttaion----->
+			res.innerHTML+=`
+			
+			<div class="flex-item" style="background:#efefef">
+                <!--firsttime-->
+                <div class="firstTime" style="height:50px;width:20%;background:#efefef;justify-content:center;align-items:center;display:flex;flex-direction:column">
+                    <div class="ftime">
+                        <h4 style="font-family:Arial Narrow;" id="sta">${onlydata.cur_stn_sta}</h4>
+                    </div>
+                    <div class="secondtime">
+                        <h4 style="font-family:Arial Narrow;margin-top:10px" id="eta">${onlydata.eta}</h4>
+                    </div>
+                </div><!--firsttime-->
+                <!--line and station name-->
+                <div class="station_name" style="height:50px;width:60%;background:#efefef;justify-content:center;align-items:center;display:flex;" >
+                    <div class="line" style="height:100px;width:20px;background:skyblue;justify-content:center;align-items:center;display:flex;position:absolute;margin-left:-90px;">
+                        <div class="point" style="height:30px;width:30px;border-radius:50%;background:white;justify-content:center;align-items:center;display:flex"><img src="https://downloadr2.apkmirror.com/wp-content/uploads/2020/09/43/5f6cb8af622cf.png" style="height:40px;width:40px"alt="Wis My Train"></div>
+                    </div>
+                    <div class="staname" style="margin-left:3%;">
+                        <p style="font-family:Arial Narrow;font-size:13px;margin-left:35px;" id="station_name">${onlydata.current_station_name}</p>
+                    </div>
+                    <div class="platformno" style="height:17px;width:15px;background:white;border-radius:2px;justify-content:center;align-items:center;margin-left:3px">
+                        <div style="margin-left:2px;font-family:Arial Narrow;margin-bottom:2px" id="platform_number">${onlydata.platform_number}</div>
+						<div class="km" style="font-size:12;font-family:Arial;margin-left:-25px">${onlydata.distance_from_source}Km</div>
+                    </div>
+                </div> <!--line and station name-->
+                <!--secondtime-->
+                <div class="secondTime" style="height:50px;width:20%;background:#efefef;justify-content:center;align-items:center;display:flex;flex-direction:column">
+                    <div class="ftime">
+                        <h4 style="font-family:Arial Narrow;" id="std">${onlydata.cur_stn_std}</h4>
+                    </div>
+                    <div class="secondtime">
+                        <h4 style="font-family:Arial Narrow;margin-top:10px" id="eta">${onlydata.etd}</h4>
+                    </div>
+                </div>
+            </div>
+			
+			
+			
+			
+			`;
+			
+			for(let i=0; i< onlydata.upcoming_stations.length;i++){
+			const station=onlydata.upcoming_stations[i];
+			res.innerHTML+=`
+		<div class="flex-item" id="${station.station_name}" style="background-color:#efefef">
+                <!--firsttime-->
+                <div class="firstTime" style="height:50px;width:20%;background:#efefef;justify-content:center;align-items:center;display:flex;flex-direction:column">
+                    <div class="ftime">
+                        <h4 style="font-family:Arial Narrow;" id="sta">${station.sta}</h4>
+                    </div>
+                    <div class="secondtime">
+                        <h4 style="font-family:Arial Narrow;margin-top:10px" id="eta">${station.eta}</h4>
+                    </div>
+                </div><!--firsttime-->
+                <!--line and station name-->
+                <div class="station_name" style="height:50px;width:60%;background:#efefef;justify-content:center;align-items:center;display:flex;" >
+                    <div class="line" style="height:100px;width:20px;background:skyblue;justify-content:center;align-items:center;display:flex;position:absolute;margin-left:-90px;">
+                        <div class="point" style="height:10px;width:10px;border-radius:50%;background:darkblue"></div>
+                    </div>
+                    <div class="staname" style="margin-left:3%;">
+                        <p style="font-family:Arial Narrow;font-size:13px;margin-left:35px;" id="station_name">${station.station_name}</p>
+                    </div>
+                    <div class="platformno" style="height:17px;width:15px;background:white;border-radius:2px;justify-content:center;align-items:center;margin-left:3px">
+                        <div style="margin-left:2px;font-family:Arial Narrow;margin-bottom:2px" id="platform_number">${station.platform_number}</div>
+						<div class="km" style="font-size:12;font-family:Arial;margin-left:-25px">${station.distance_from_source}Km</div>
+                    </div>
+                </div> <!--line and station name-->
+                <!--secondtime-->
+                <div class="secondTime" style="height:50px;width:20%;background:#efefef;justify-content:center;align-items:center;display:flex;flex-direction:column">
+                    <div class="ftime">
+                        <h4 style="font-family:Arial Narrow;" id="std">${station.std}</h4>
+                    </div>
+                    <div class="secondtime">
+                        <h4 style="font-family:Arial Narrow;margin-top:10px" id="eta">${station.etd}</h4>
+                    </div>
+                </div>
+            </div>`;
+			
+			
+			
+			}
+			
+			
+			
+			
+			
+			})
+		
+		
+		}
+		
+		function closeNotification() {
+  var notification = document.getElementById('notification');
+  notification.style.display = 'none';
+}
+
+  
+    </script>
+	
+	
+	</body>
+	</html>

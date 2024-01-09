@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PNR check</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .main {
+            height: 70px;
+            width: 100%;
+            background: skyblue;
+            align-items: center;
+            justify-content: space-between;
+            display: flex;
+        }
+
+        .container {
+            width: 100%;
+            height: 700px;
+            background: ;
+            margin-top: 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Styling for the back button */
+        .main .back {
+            background: white;
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        form.example input[type=text] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid white;
+            float: left;
+            width: 80%;
+            background: #f1f1f1;
+            box-shadow: 0px 0px 3px grey;
+            border-radius: 6px;
+        }
+
+        form.example button {
+            float: left;
+            width: 20%;
+            padding: 10px;
+            height: 46px;
+            background: skyblue;
+            color: white;
+            font-size: 17px;
+            border: 1px solid white;
+            border-left: none;
+            cursor: pointer;
+            box-shadow: 0px 0px 3px grey;
+            border-radius: 6px;
+        }
+
+        form.example button:hover {
+            background: #0b7dda;
+        }
+
+        .result {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            border-radius: 6px;
+            align-items: center;
+            background: silver;
+            padding: 1px 1px;
+            width: 260px;
+        }
+
+        /* Styling for the result box */
+        .result .real {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            border-radius: 6px;
+            align-items: center;
+            background: lightgrey;
+            height: 170px;
+            width: 240px;
+            flex-direction: column;
+        }
+
+        /* Additional styling for the result box content */
+        .result .real h4,
+        .result .real h5 {
+            font-family: Arial;
+            margin-top: -15px;
+        }
+
+        .result .real h5:last-child {
+            margin-top: -30px;
+        }
+
+        .result .real table {
+            margin-top: -30px;
+            padding: 10px;
+        }
+
+        .result .real th,
+        .result .real td {
+            padding: 10px;
+            margin: 5px;
+            font-family: Arial;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main">
+        <div class="section">
+            <h3 style="font-family:arial; margin-left:10px;color:white">PNR status</h3>
+        </div>
+        <a href="intro.html"><div class="back" style="margin-right:10px;">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXz5H6UZVUCoz-h6AwpnBqj9Rz8Pd5Eq99HJ_evrbUFA&s" style="height:35px;width:35px" />
+        </div></a>
+    </div>
+
+    <div class="container">
+        <form class="example" style="margin-right:0px; margin-top:-250px;">
+            <input type="text" id="trainno" placeholder="Enter PNR">
+            <button onclick="getpnr(); return false;" style="margin-top:-2px;margin-right:-100px"><i class="fa fa-search"></i></button>
+        </form>
+
+        <div class="result" id="res">
+           
+        </div>
+    </div>
+
+    <script>
+        async function getpnr() {
+            let no = document.getElementById("trainno");
+            var inno = no.value;
+            console.log(inno);
+
+             const url = `https://irctc1.p.rapidapi.com/api/v3/getPNRStatus?pnrNumber=${inno}`;
+
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': '5c514bae77msh55e4cc4185b50e4p1104c7jsn7987f9655639',
+                    'X-RapidAPI-Host': 'irctc1.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await fetch(url, options);
+
+                if (!response.ok) {
+                    throw new Error("API call failed");
+                }
+
+                const data = await response.json();
+                const onlydata = await data.data;
+                console.log(onlydata);
+
+                // Assuming data contains the required information
+
+var resultDiv = document.getElementById("res");
+resultDiv.innerHTML = `<div class="real">
+    <h4>${onlydata.TrainNo}- ${onlydata.TrainName}</h4>
+    <h5>${onlydata.FromDetails.stationName} -- <span>${onlydata.ToDetails.stationName}</span></h5>
+    <h5> <span>${onlydata.SourceDoj} / ${onlydata.Class}</span></h5>
+    <h5>------------------------------------</h5>
+    <table>
+        <tr>
+            <th>booking status</th>
+            <td>${onlydata.PassengerStatus[0].BookingStatus}</td>
+        </tr>
+        <tr>
+            <th>current status</th>
+            <td>${onlydata.PassengerStatus[0].CurrentStatus}</td>
+        </tr>
+    </table>
+</div>`;
+
+                
+                
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
